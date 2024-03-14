@@ -1,7 +1,7 @@
 package Progetto.BoatsItalia.BoatsItalia.service;
 
-import Progetto.BoatsItalia.BoatsItalia.model.User;
-import Progetto.BoatsItalia.BoatsItalia.model.UserRole;
+import Progetto.BoatsItalia.BoatsItalia.model.entities.User;
+import Progetto.BoatsItalia.BoatsItalia.model.enums.UserRole;
 import Progetto.BoatsItalia.BoatsItalia.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,10 +44,10 @@ public class UserService {
 
     //metodo per login
 
-    public User login(String username, String password){
+    public String login(String username, String password){
         User user = userRepository.findByUsername(username);
         if (user != null && passwordEncoder.matches(password, user.getPassword())){
-            return user;
+            return "ok";
         }
         return null;
     }

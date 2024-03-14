@@ -1,4 +1,4 @@
-package Progetto.BoatsItalia.BoatsItalia.model;
+package Progetto.BoatsItalia.BoatsItalia.model.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -14,19 +14,21 @@ public class Image {
     private String fileName;
 
     @Column(nullable = false)
-    private String imageUrl;
+    @Lob
+    private byte[] blob;
+
 
     @ManyToOne
-    @JoinColumn(name = "announcement_id", nullable = false)
-    private Announcement announcement;
+    @JoinColumn(name = "advertisement_id", nullable = false)
+    private Advertisement advertisement;
 
     public Image() {
     }
 
-    public Image(String fileName, String imageUrl, Announcement announcement) {
+    public Image(String fileName, byte[] blob, Advertisement advertisement) {
         this.fileName = fileName;
-        this.imageUrl = imageUrl;
-        this.announcement = announcement;
+        this.blob = blob;
+        this.advertisement = advertisement;
     }
 
     @Override
@@ -34,8 +36,7 @@ public class Image {
         return "Image{" +
                 "id=" + id +
                 ", fileName='" + fileName + '\'' +
-                ", imageUrl='" + imageUrl + '\'' +
-                ", announcement=" + announcement +
+                ", advertisement=" + advertisement +
                 '}';
     }
 }

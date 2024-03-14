@@ -1,8 +1,11 @@
-package Progetto.BoatsItalia.BoatsItalia.model;
+package Progetto.BoatsItalia.BoatsItalia.model.entities;
 
+import Progetto.BoatsItalia.BoatsItalia.model.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
 
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -27,7 +30,7 @@ public class User {
     private UserRole role;
 
     @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL)
-    private List<Announcement> announcements;
+    private List<Advertisement> advertisements;
 
     public User() {
     }
@@ -48,5 +51,19 @@ public class User {
                 ", email='" + email + '\'' +
                 ", role=" + role +
                 '}';
+    }
+
+    public String getHashPassword() {
+        return password;
+    }
+
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        GrantedAuthority[] UserRole = new GrantedAuthority[0];
+        return List.of(UserRole);
+    }
+
+    public void setHashPassword(String encode) {
+        this.password = encode;
+
     }
 }
