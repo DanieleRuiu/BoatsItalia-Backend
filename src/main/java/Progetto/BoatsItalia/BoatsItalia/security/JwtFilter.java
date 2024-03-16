@@ -43,7 +43,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
             jwtTools.validateToken(token); // Valida il token JWT utilizzando JwtTools
 
-            UUID userId = jwtTools.extractUserIdFromToken(token); // Estrae l'ID utente dal token JWT
+            Long userId = jwtTools.extractUserIdFromToken(token); // Estrae l'ID utente dal token JWT
 
             User u = authSvc.findUserById(userId).orElseThrow(
                     () -> new UnauthorizedException("Invalid access token") // Trova l'utente corrispondente all'ID utente estratto dal token JWT; se l'utente non è trovato, solleva un'eccezione UnauthorizedException

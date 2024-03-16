@@ -22,11 +22,6 @@ public class RegionController {
     @Autowired
     private CountryRepository countryRepository;
 
-//    @GetMapping("/italian")
-//    public List<Region> getAllItalianRegions() {
-//        // Recupera tutte le regioni italiane dal database
-//        return regionRepository.findAll();
-//    }
 
 
 }

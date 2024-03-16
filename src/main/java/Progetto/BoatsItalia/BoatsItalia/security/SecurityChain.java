@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -33,22 +34,27 @@ public class SecurityChain {
     // Configurazione della catena di sicurezza
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                // Configura le richieste autorizzate
-                .authorizeRequests(authorizeRequests ->
-                        authorizeRequests.anyRequest().permitAll() // Consente l'accesso a tutte le richieste
+       http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+       http.csrf(AbstractHttpConfigurer::disable)
+        .cors(AbstractHttpConfigurer::disable)
+                .sessionManagement(sessionManagement ->
+                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                // Aggiunge il filtro JwtFilter prima del filtro di autenticazione UsernamePasswordAuthenticationFilter
+
+                .authorizeRequests(authorizeRequests ->
+                        authorizeRequests.anyRequest().permitAll()
+                )
+
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 // Configura la gestione delle sessioni
                 .sessionManagement(sessionManagement ->
-                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Imposta la politica di creazione delle sessioni come stateless
+                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                // Configura la gestione delle eccezioni
+
                 .exceptionHandling(exceptionHandling ->
-                        exceptionHandling.accessDeniedHandler(accessDeniedHandler()) // Imposta il gestore degli accessi negati
+                        exceptionHandling.accessDeniedHandler(accessDeniedHandler())
                 );
 
-        return http.build(); // Restituisce la catena di sicurezza configurata
-    }
+    return http.build();
+}
 }

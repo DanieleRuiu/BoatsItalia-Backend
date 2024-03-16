@@ -1,6 +1,7 @@
 package Progetto.BoatsItalia.BoatsItalia.model.entities;
 
 import Progetto.BoatsItalia.BoatsItalia.model.enums.UserRole;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,13 +20,20 @@ public class User {
     @Column (nullable = false, unique = true)
     private String username;
 
-    @Column (nullable = false, unique = true)
+    @Column (nullable = false)
+    private String firstName;
+
+    @Column (nullable = false)
+    private String lastName;
+
+    @Column (nullable = false)
+    @JsonIgnore
     private String password;
 
     @Column (nullable = false, unique = true)
     private String email;
 
-    @Column (nullable = false, unique = true)
+    @Column (nullable = false)
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
@@ -35,9 +43,11 @@ public class User {
     public User() {
     }
 
-    public User(String username, String password, String email, UserRole role) {
+    public User(String username, String password, String firstName, String lastName, String email, UserRole role) {
         this.username = username;
         this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.role = role;
     }
@@ -49,10 +59,12 @@ public class User {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", role=" + role +
                 '}';
     }
-
+    @JsonIgnore
     public String getHashPassword() {
         return password;
     }

@@ -29,7 +29,11 @@ public class JwtTools {
     // Metodo per creare un token JWT
     public String createToken(User u) {
         return Jwts.builder()
-                .setSubject(String.valueOf(u.getId())) // Imposta il soggetto del token come ID utente
+                .setSubject(String.valueOf(u.getId()))
+                .claim("userId", u.getId())
+                .claim("username", u.getUsername())
+                .claim("email", u.getEmail())
+
                 .setIssuedAt(new Date(System.currentTimeMillis())) // Imposta la data di emissione del token come tempo corrente
                 .setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(exp))) // Imposta la data di scadenza del token come tempo corrente più l'intervallo di scadenza configurato
                 .signWith(Keys.hmacShaKeyFor(secret.getBytes())) // Firma il token con una chiave segreta
@@ -47,12 +51,13 @@ public class JwtTools {
     }
 
     // Metodo per estrarre l'ID utente dal token JWT
-    public UUID extractUserIdFromToken(String token) throws UnauthorizedException {
+    public Long extractUserIdFromToken(String token) throws UnauthorizedException {
         try {
             // Parsa il token e restituisce il soggetto come stringa, che viene poi convertito in UUID
-            return UUID.fromString(Jwts.parser().setSigningKey(Keys.hmacShaKeyFor(secret.getBytes())).build()
+            return Long.parseLong(Jwts.parser().setSigningKey(Keys.hmacShaKeyFor(secret.getBytes())).build()
                     .parseClaimsJws(token).getBody().getSubject());
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e){
+                System.out.println(e);
             throw new UnauthorizedException("Invalid access token");
         }
     }
@@ -70,7 +75,7 @@ public class JwtTools {
         // Ottiene il token JWT dall'intestazione Authorization della richiesta
         String token = req.getHeader("Authorization").split(" ")[1];
         // Estrae l'ID utente dal token JWT
-        UUID tokenUserId = extractUserIdFromToken(token);
+        Long tokenUserId = extractUserIdFromToken(token);
         // Confronta l'ID utente estratto con l'ID utente fornito e restituisce true se corrispondono
         return tokenUserId.equals(userId);
     }

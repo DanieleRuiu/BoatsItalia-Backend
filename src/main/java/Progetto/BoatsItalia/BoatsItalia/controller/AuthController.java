@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.http.HttpHeaders;
+
 @RestController // Indica che questa classe è un controller REST
 public class AuthController {
 
@@ -34,8 +36,12 @@ public class AuthController {
     public AccessTokenRes login(@RequestBody @Validated LoginDTO loginDTO, BindingResult validation) throws BadRequestException, UnauthorizedException, UnauthorizedException {
         // Metodo per l'autenticazione di un utente
         if (validation.hasErrors()) // Se ci sono errori di validazione nei dati inviati
-            throw new BadRequestException(ValidationMessages.generateValidationErrorMessage(validation)); // Solleva un'eccezione BadRequestException con i messaggi di validazione
-        return authSvc.login(loginDTO.email(), loginDTO.password()); // Chiama il metodo del servizio per il login di un utente
-    }
+            throw new BadRequestException(ValidationMessages.generateValidationErrorMessage(validation));
+
+        AccessTokenRes token = authSvc.login(loginDTO.email(), loginDTO.password());
+        return token; // Chiama il metodo del servizio per effettuare il login
+
+
+        }
 
 }

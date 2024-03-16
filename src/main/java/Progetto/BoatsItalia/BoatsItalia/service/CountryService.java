@@ -7,12 +7,5 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CountryService {
-    @Autowired
-    private CountryRepository countryRepository;
 
-    public void initializeCountry() {
-        Country italy = new Country();
-        italy.setName("Italy");
-        countryRepository.save(italy);
-    }
 }

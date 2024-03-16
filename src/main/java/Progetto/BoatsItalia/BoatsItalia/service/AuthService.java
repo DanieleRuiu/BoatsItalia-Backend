@@ -34,6 +34,9 @@ public class AuthService {
         user.setEmail(userDTO.getEmail());
         user.setHashPassword(encoder.encode(userDTO.getPassword())); // Codifica la password prima di salvarla
         user.setRole(UserRole.USER); // Imposta il ruolo dell'utente come utente standard
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setUsername(userDTO.getUsername());
 
         try {
             return userRp.save(user); // Salva l'utente nel repository degli utenti
@@ -46,7 +49,7 @@ public class AuthService {
     }
 
     // Metodo per trovare un utente per ID
-    public Optional<User> findUserById(UUID id) {
+    public Optional<User> findUserById(Long id) {
         return userRp.findById(id);
     }
 
