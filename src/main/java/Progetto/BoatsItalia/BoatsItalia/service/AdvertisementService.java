@@ -36,6 +36,7 @@ public class AdvertisementService {
         return advertisementRepository.findByPrice(price);
     }
 
+
     public List <Advertisement> getAnnouncementsByRegion(String region){
         return advertisementRepository.findByRegion(region);
     }
