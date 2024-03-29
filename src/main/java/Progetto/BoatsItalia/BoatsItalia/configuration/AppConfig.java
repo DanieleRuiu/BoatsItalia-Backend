@@ -14,4 +14,5 @@ public class AppConfig {
         // Restituisce un'istanza di BCryptPasswordEncoder, un'implementazione di PasswordEncoder
         return new BCryptPasswordEncoder();
     }
+
 }

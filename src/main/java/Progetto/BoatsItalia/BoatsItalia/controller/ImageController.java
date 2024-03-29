@@ -1,5 +1,5 @@
 package Progetto.BoatsItalia.BoatsItalia.controller;
-
+/*
 import Progetto.BoatsItalia.BoatsItalia.model.entities.Image;
 import Progetto.BoatsItalia.BoatsItalia.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,3 +46,4 @@ public class ImageController {
         return imageService.uploadImage(file);
     }
 }
+*/

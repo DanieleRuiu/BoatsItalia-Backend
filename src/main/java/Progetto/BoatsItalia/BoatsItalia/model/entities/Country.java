@@ -1,5 +1,5 @@
 package Progetto.BoatsItalia.BoatsItalia.model.entities;
-
+/*
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -29,3 +29,4 @@ public class Country {
 
 
 }
+*/

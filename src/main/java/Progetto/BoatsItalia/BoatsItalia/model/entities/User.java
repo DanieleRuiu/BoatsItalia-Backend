@@ -34,16 +34,16 @@ public class User {
     private String email;
 
     @Column (nullable = false)
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
+    //@Enumerated(EnumType.STRING)
+    private String role;
 
-    @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL)
+   /* @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL)
     private List<Advertisement> advertisements;
-
+*/
     public User() {
     }
 
-    public User(String username, String password, String firstName, String lastName, String email, UserRole role) {
+    public User(String username, String password, String firstName, String lastName, String email, String role) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;

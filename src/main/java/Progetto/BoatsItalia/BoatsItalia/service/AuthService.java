@@ -33,7 +33,7 @@ public class AuthService {
         User user = new User();
         user.setEmail(userDTO.getEmail());
         user.setHashPassword(encoder.encode(userDTO.getPassword())); // Codifica la password prima di salvarla
-        user.setRole(UserRole.USER); // Imposta il ruolo dell'utente come utente standard
+        user.setRole("ROLE_USER"); // Imposta il ruolo dell'utente come utente standard
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         user.setUsername(userDTO.getUsername());
@@ -59,9 +59,13 @@ public class AuthService {
         User user = (User) userRp.findByEmail(email).orElseThrow(
                 () -> new UnauthorizedException("Email and/or password are incorrect")
         );
+        System.out.println(password);
         // Verifica se la password fornita corrisponde alla password dell'utente
-        if (!encoder.matches(password, user.getHashPassword()))
+        if (!encoder.matches(password, user.getHashPassword())) {
+            System.out.println("password not correct");
             throw new UnauthorizedException("Email and/or password are incorrect");
+
+        }
         // Se le credenziali sono corrette, crea e restituisce un nuovo token di accesso
         return new AccessTokenRes(jwtTools.createToken(user));
     }

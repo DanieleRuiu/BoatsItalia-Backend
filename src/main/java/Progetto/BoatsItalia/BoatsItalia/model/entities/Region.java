@@ -1,5 +1,5 @@
 package Progetto.BoatsItalia.BoatsItalia.model.entities;
-
+/*
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -39,4 +39,4 @@ public class Region {
                 ", country=" + country +
                 '}';
     }
-}
+}*/

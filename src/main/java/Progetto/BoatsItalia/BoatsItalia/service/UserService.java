@@ -22,7 +22,7 @@ public class UserService {
             throw new IllegalArgumentException("Username already exist");
         }
         user.setPassword(Arrays.toString(passwordEncoder.encode(user.getPassword()).toCharArray()));
-        user.setRole(UserRole.USER);
+        user.setRole("ROLE_USER");
         userRepository.save(user);
     }
 

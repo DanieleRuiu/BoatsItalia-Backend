@@ -1,5 +1,5 @@
 package Progetto.BoatsItalia.BoatsItalia.service;
-
+/*
 import Progetto.BoatsItalia.BoatsItalia.model.entities.Image;
 import Progetto.BoatsItalia.BoatsItalia.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,4 +31,4 @@ public class ImageService {
         // Implementazione del metodo per caricare un'immagine
         return "Image uploaded successfully";
     }
-}
+}*/

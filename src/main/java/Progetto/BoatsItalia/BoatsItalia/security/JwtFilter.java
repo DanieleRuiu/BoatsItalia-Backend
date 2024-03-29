@@ -32,10 +32,21 @@ public class JwtFilter extends OncePerRequestFilter {
     // Questo metodo viene eseguito per ogni richiesta HTTP
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws ServletException, IOException {
+        System.out.println("Requesting check for JWT");
         try {
+            ObjectMapper mapper = new ObjectMapper();
+            System.out.println(mapper.writeValueAsString(req));
+            System.out.println(req.getHeaders("Authorization"));
             String authorization = req.getHeader("Authorization"); // Ottiene l'intestazione Authorization dalla richiesta
-            if (authorization == null)
-                throw new UnauthorizedException("No provided access token"); // Se l'intestazione Authorization è null, solleva un'eccezione UnauthorizedException
+            System.out.println("Authorization: " + authorization);
+
+            if(!req.getRequestURL().toString().contains("auth")){
+
+
+            if (authorization == null) {
+                System.out.println("No provided access token");
+                throw new UnauthorizedException("No provided access token");
+            } // Se l'intestazione Authorization è null, solleva un'eccezione UnauthorizedException
             else if (!authorization.startsWith("Bearer "))
                 throw new UnauthorizedException("malformed 'Authorization' header"); // Se l'intestazione Authorization non inizia con "Bearer ", solleva un'eccezione UnauthorizedException
 
@@ -53,7 +64,12 @@ public class JwtFilter extends OncePerRequestFilter {
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(u, null, u.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
             filterChain.doFilter(req, res); // Prosegue nella catena dei filtri
+
+            }
+
+
         } catch (UnauthorizedException e) { // Gestisce le eccezioni di tipo UnauthorizedException
+            System.out.println("Unauthorized request: " + e.getMessage());
             ObjectMapper mapper = new ObjectMapper(); // Crea un'istanza di ObjectMapper per la serializzazione dell'oggetto HttpErrorRes in formato JSON
             res.setStatus(HttpStatus.UNAUTHORIZED.value()); // Imposta lo stato della risposta HTTP a UNAUTHORIZED (401)
             res.setContentType("application/json;charset=UTF-8"); // Imposta il tipo di contenuto della risposta HTTP a JSON
@@ -67,6 +83,6 @@ public class JwtFilter extends OncePerRequestFilter {
     // Questo metodo viene utilizzato per determinare se il filtro dovrebbe essere eseguito per una determinata richiesta
     @Override
     protected boolean shouldNotFilter(HttpServletRequest req) throws ServletException {
-        return new AntPathMatcher().match("/auth/**", req.getServletPath()); // Controlla se il percorso della richiesta corrisponde a "/auth/**"
+        return new AntPathMatcher().match("/**", req.getServletPath()); // Controlla se il percorso della richiesta corrisponde a "/auth/**"
     }
 }

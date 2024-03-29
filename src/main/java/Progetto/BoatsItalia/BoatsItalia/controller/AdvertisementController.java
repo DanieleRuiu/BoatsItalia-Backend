@@ -8,16 +8,30 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController // Indica che questa classe è un controller REST
-@RequestMapping("/api/announcements") // Mappatura di base per le richieste HTTP in questo controller
+@RestController
+@CrossOrigin(origins="http://localhost:4200",maxAge = 3600 )// Indica che questa classe è un controller REST
+@RequestMapping("/announcements") // Mappatura di base per le richieste HTTP in questo controller
 public class AdvertisementController {
     @Autowired
     private AdvertisementService advertisementService; // Iniezione di dipendenza del servizio Advertisement
-
-    @PostMapping // Mappatura per le richieste POST su /api/announcements
-    public ResponseEntity<?> createAnnouncement(@RequestBody Advertisement advertisement) {
+    @CrossOrigin(origins="http://localhost:4200",maxAge = 3600)
+    @PostMapping("") // Mappatura per le richieste POST su /api/announcements
+    public ResponseEntity<Advertisement> createAnnouncement(@RequestBody Advertisement advertisement) {
         advertisementService.createAnnouncement(advertisement); // Chiama il metodo del servizio per creare un annuncio
         return ResponseEntity.ok().build(); // Restituisce una risposta HTTP 200 OK senza contenuto
+    }
+
+    @GetMapping("") // Mappatura per le richieste GET su /api/announcements/{id}
+    public ResponseEntity<List<Advertisement>> getAnnouncementById() {
+        List<Advertisement> advertisements = advertisementService.getAllAnnouncements(); // Ottiene un annuncio per l'ID specificato
+
+        System.out.println("QUI");
+        System.out.println(advertisements);
+        if (advertisements != null) {
+            return ResponseEntity.ok(advertisements); // Restituisce l'annuncio trovato con una risposta HTTP 200 OK
+        } else {
+            return ResponseEntity.notFound().build(); // Restituisce una risposta HTTP 404 Not Found se l'annuncio non è stato trovato
+        }
     }
 
     @GetMapping("/{id}") // Mappatura per le richieste GET su /api/announcements/{id}

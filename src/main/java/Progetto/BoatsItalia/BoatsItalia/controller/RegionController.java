@@ -1,5 +1,5 @@
 package Progetto.BoatsItalia.BoatsItalia.controller;
-
+/*
 import Progetto.BoatsItalia.BoatsItalia.model.entities.Country;
 import Progetto.BoatsItalia.BoatsItalia.model.entities.Region;
 import Progetto.BoatsItalia.BoatsItalia.repository.CountryRepository;
@@ -24,4 +24,4 @@ public class RegionController {
 
 
 
-}
+}*/
