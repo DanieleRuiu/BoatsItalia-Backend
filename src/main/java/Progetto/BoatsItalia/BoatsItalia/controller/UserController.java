@@ -6,16 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController // Indica che questa classe è un controller REST
 @RequestMapping("/api/users") // Mappatura di base per le richieste HTTP in questo controller
+@CrossOrigin(origins="http://localhost:4200",maxAge = 3600 )
 public class UserController {
     @Autowired
     private UserService userService; // Iniezione di dipendenza del servizio UserService
 
     @PostMapping // Mappatura per le richieste POST su /api/users
     public ResponseEntity<?> registerUser(@RequestBody User user) {
-        userService.registerUser(user); // Chiama il metodo del servizio per registrare un utente
-        return ResponseEntity.ok().build(); // Restituisce una risposta HTTP 200 OK senza contenuto
+        User responseUser = userService.registerUser(user); // Chiama il metodo del servizio per registrare un utente
+        return ResponseEntity.ok(responseUser); // Restituisce una risposta HTTP 200 OK senza contenuto
     }
 
     @GetMapping("/{username}") // Mappatura per le richieste GET su /api/users/{username}
@@ -42,8 +44,8 @@ public class UserController {
     }
 
     @PostMapping("/login") // Mappatura per le richieste POST su /api/users/login
-    public ResponseEntity<String> login(@RequestBody User user) {
-        String loggedUser = userService.login(user.getUsername(), user.getPassword()); // Effettua il login dell'utente
+    public ResponseEntity<User> login(@RequestBody User user) {
+        User loggedUser = userService.login(user.getUsername(), user.getPassword()); // Effettua il login dell'utente
         if (loggedUser != null) {
             return ResponseEntity.ok(loggedUser); // Restituisce il nome utente dell'utente loggato con una risposta HTTP 200 OK
         } else {

@@ -40,7 +40,7 @@ public class Advertisement {
   @Column(nullable = false)
   private String category; // Campo per la categoria dell'annuncio
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String telephone;
     @Column(nullable = false)
     private String email;

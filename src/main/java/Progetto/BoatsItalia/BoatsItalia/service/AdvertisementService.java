@@ -3,6 +3,7 @@ package Progetto.BoatsItalia.BoatsItalia.service;
 import Progetto.BoatsItalia.BoatsItalia.model.entities.Advertisement;
 import Progetto.BoatsItalia.BoatsItalia.repository.AdvertisementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.query.EscapeCharacter;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,5 +48,10 @@ public class AdvertisementService {
 
     public void deleteAnnouncement(Long id){
         advertisementRepository.deleteById(id);
+    }
+
+    public List <Advertisement> searchByTitle(String title){
+        //String searchKey = EscapeCharacter.DEFAULT.escape(title);
+        return advertisementRepository.findByTitleIgnoreCase(title);
     }
 }

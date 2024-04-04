@@ -2,6 +2,8 @@ package Progetto.BoatsItalia.BoatsItalia.controller;
 
 import Progetto.BoatsItalia.BoatsItalia.model.entities.Advertisement;
 import Progetto.BoatsItalia.BoatsItalia.service.AdvertisementService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,22 +11,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins="http://localhost:4200",maxAge = 3600 )// Indica che questa classe è un controller REST
-@RequestMapping("/announcements") // Mappatura di base per le richieste HTTP in questo controller
+@CrossOrigin(origins="http://localhost:4200",maxAge = 3600 )
+@RequestMapping("/announcements")
 public class AdvertisementController {
     @Autowired
-    private AdvertisementService advertisementService; // Iniezione di dipendenza del servizio Advertisement
-    @CrossOrigin(origins="http://localhost:4200",maxAge = 3600)
-    @PostMapping("") // Mappatura per le richieste POST su /api/announcements
-    public ResponseEntity<Advertisement> createAnnouncement(@RequestBody Advertisement advertisement) {
-        advertisementService.createAnnouncement(advertisement); // Chiama il metodo del servizio per creare un annuncio
-        return ResponseEntity.ok().build(); // Restituisce una risposta HTTP 200 OK senza contenuto
-    }
+    private AdvertisementService advertisementService;
 
-    @GetMapping("") // Mappatura per le richieste GET su /api/announcements/{id}
+
+    @GetMapping("")
     public ResponseEntity<List<Advertisement>> getAnnouncementById() {
-        List<Advertisement> advertisements = advertisementService.getAllAnnouncements(); // Ottiene un annuncio per l'ID specificato
-
+        List<Advertisement> advertisements = advertisementService.getAllAnnouncements();
         System.out.println("QUI");
         System.out.println(advertisements);
         if (advertisements != null) {
@@ -56,16 +52,14 @@ public class AdvertisementController {
         return ResponseEntity.ok(advertisements); // Restituisce gli annunci trovati con una risposta HTTP 200 OK
     }
 
-    @PutMapping("/{id}") // Mappatura per le richieste PUT su /api/announcements/{id}
-    public ResponseEntity<?> updateAnnouncement(@PathVariable int id, @RequestBody Advertisement advertisement) {
-        advertisement.setId(id); // Imposta l'ID dell'annuncio con quello fornito nella richiesta
-        advertisementService.updateAnnouncement(advertisement); // Chiama il metodo del servizio per aggiornare l'annuncio
-        return ResponseEntity.ok().build(); // Restituisce una risposta HTTP 200 OK senza contenuto
-    }
 
-    @DeleteMapping("/{id}") // Mappatura per le richieste DELETE su /api/announcements/{id}
-    public ResponseEntity<?> deleteAnnouncement(@PathVariable Long id) {
-        advertisementService.deleteAnnouncement(id); // Chiama il metodo del servizio per eliminare l'annuncio
-        return ResponseEntity.ok().build(); // Restituisce una risposta HTTP 200 OK senza contenuto
+    @PostMapping("/search")
+    public  ResponseEntity<?> searchByTitle(@RequestBody String title) throws JsonProcessingException {
+        System.out.println(title);
+        List<Advertisement> advertisements = advertisementService.searchByTitle(title);
+        ObjectMapper mapper = new ObjectMapper();
+
+        System.out.println(mapper.writeValueAsString(advertisements.get(0)));
+        return ResponseEntity.ok(advertisements);
     }
 }
